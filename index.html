@@ -1,0 +1,370 @@
+<div class="cyber-panel">
+    <h1 style="text-align:center;margin-bottom:0.8rem;">📦 外送資產訂購單</h1>
+    <div id="date-picker">
+        <label style="color:var(--neon-cyan);margin-right:5px;">選擇日期：</label>
+        <span id="date-display"></span>
+        <button id="reset-date-button">今天</button>
+        <div id="date-modal">
+            <select id="year-select"></select>
+            <select id="month-select"></select>
+            <select id="day-select"></select>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">UberEats</div>
+        <div class="grid-container" data-category="ubereats">
+            <div class="cyber-input"><span class="label">UberEats提袋</span><input type="text" name="ubereats_bag" value="0"></div>
+            <div class="cyber-input"><span class="label">UberEats六格箱</span><input type="text" name="ubereats_6grid" value="0"></div>
+            <div class="cyber-input"><span class="label">UberEats八格箱</span><input type="text" name="ubereats_8grid" value="0"></div>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">FoodPanda</div>
+        <div class="grid-container" data-category="foodpanda">
+            <div class="cyber-input"><span class="label">FoodPanda提袋</span><input type="text" name="foodpanda_bag" value="0"></div>
+            <div class="cyber-input"><span class="label">FoodPanda六格箱</span><input type="text" name="foodpanda_6grid" value="0"></div>
+            <div class="cyber-input"><span class="label">FoodPanda八格箱</span><input type="text" name="foodpanda_8grid" value="0"></div>
+            <div class="cyber-input"><span class="label">FoodPanda 2022六格箱</span><input type="text" name="foodpanda_2022_6grid" value="0"></div>
+            <div class="cyber-input"><span class="label">FoodPanda 2022八格箱</span><input type="text" name="foodpanda_2022_8grid" value="0"></div>
+            <div class="cyber-input"><span class="label">FoodPanda魔鬼氈保溫箱</span><input type="text" name="foodpanda_velcro_insulated" value="0"></div>
+            <div class="cyber-input"><span class="label">FoodPanda磁吸式保溫箱</span><input type="text" name="foodpanda_magnetic_insulated" value="0"></div>
+            <div class="cyber-input"><span class="label">FoodPanda上掀款保溫箱</span><input type="text" name="foodpanda_flip_insulated" value="0"></div>
+        </div>
+    </div>
+
+    <div id="hud-display"></div>
+</div>
+
+<style>
+    :root {
+        --space-blue: #1a1a2e;
+        --neon-cyan: #00f3ff;
+        --cyber-purple: #712f79;
+        --transition-time: 0.3s;
+    }
+    .cyber-panel {
+        background: var(--space-blue);
+        color: var(--neon-cyan);
+        border: 1px solid var(--neon-cyan);
+        border-radius: 8px;
+        padding: 0.5rem;
+        width: 100%;
+        max-width: 360px;
+        box-shadow: 0 0 15px rgba(0,243,255,0.2);
+        box-sizing: border-box;
+        margin: 0 auto;
+    }
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+    }
+    .category-section {
+        margin-bottom: 0.8rem;
+    }
+    .category-title {
+        color: var(--neon-cyan);
+        font-size: 1.2rem;
+        margin-bottom: 0.4rem;
+        border-bottom: 1px solid var(--cyber-purple);
+        padding-bottom: 0.2rem;
+    }
+    .cyber-input {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid var(--cyber-purple);
+        border-radius: 6px;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all var(--transition-time) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .cyber-input .label {
+        text-align: left;
+    }
+    .cyber-input:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(113,47,121,0.4);
+    }
+    input[type="text"] {
+        width: 80px;
+        padding: 0.5rem;
+        background: transparent;
+        border: 1px solid var(--neon-cyan);
+        border-radius: 4px;
+        color: var(--neon-cyan);
+        font-size: 1rem;
+        text-align: center;
+        transition: border-color var(--transition-time);
+    }
+    input[type="text"]:focus {
+        border-color: var(--cyber-purple);
+        outline: none;
+    }
+    #hud-display {
+        background: rgba(0,0,0,0.5);
+        border: 1px solid var(--neon-cyan);
+        border-radius: 6px;
+        padding: 0.8rem;
+        margin-top: 0.8rem;
+        text-align: left;
+        backdrop-filter: blur(8px);
+        cursor: pointer;
+        transition: border-color var(--transition-time);
+    }
+    #hud-display:hover {
+        border-color: var(--cyber-purple);
+    }
+    #hud-display p {
+        margin: 3px 0;
+        font-size: 1rem;
+        color: var(--neon-cyan);
+    }
+    #date-picker {
+        text-align: center;
+        margin-bottom: 0.4rem;
+        position: relative;
+    }
+    #date-display {
+        background: transparent;
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 5px;
+        transition: box-shadow var(--transition-time);
+    }
+    #date-display:hover {
+        box-shadow: 0 0 8px rgba(0,243,255,0.5);
+    }
+    #date-modal {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.8);
+        border: 1px solid var(--neon-cyan);
+        border-radius: 6px;
+        padding: 0.5rem;
+        z-index: 10;
+        box-shadow: 0 0 15px rgba(0,243,255,0.3);
+    }
+    #date-modal select {
+        background: var(--space-blue);
+        border: 1px solid var(--cyber-purple);
+        color: var(--neon-cyan);
+        padding: 0.3rem;
+        margin: 0.3rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+    #reset-date-button {
+        margin-left: 5px;
+        padding: 3px 8px;
+        background: var(--cyber-purple);
+        border: 1px solid var(--neon-cyan);
+        border-radius: 4px;
+        color: var(--neon-cyan);
+        cursor: pointer;
+        transition: all var(--transition-time);
+    }
+    #reset-date-button:hover {
+        background: var(--neon-cyan);
+        color: var(--space-blue);
+    }
+    @media (max-width: 480px) {
+        .cyber-panel {
+            padding: 0.4rem;
+            max-width: 100%;
+        }
+        .category-title {
+            font-size: 1.1rem;
+        }
+        .cyber-input {
+            padding: 0.4rem;
+        }
+        input[type="text"] {
+            width: 70px;
+            font-size: 0.9rem;
+        }
+        #hud-display {
+            padding: 0.6rem;
+        }
+    }
+</style>
+
+<script>
+    const utils = {
+        padZero(num) { return String(num).padStart(2, '0'); },
+        getDaysInMonth(year, month) { return new Date(year, month, 0).getDate(); }
+    };
+
+    const dateManager = {
+        state: { year: 2025, month: new Date().getMonth() + 1, day: new Date().getDate() },
+        elements: {
+            display: document.getElementById('date-display'),
+            modal: document.getElementById('date-modal'),
+            yearSelect: document.getElementById('year-select'),
+            monthSelect: document.getElementById('month-select'),
+            daySelect: document.getElementById('day-select')
+        },
+        init() {
+            this.render();
+            this.bindEvents();
+        },
+        render() {
+            this.elements.display.textContent = 
+                `${this.state.year}/${utils.padZero(this.state.month)}/${utils.padZero(this.state.day)}`;
+            this.populateYears();
+            this.populateMonths();
+            this.populateDays();
+            calculateResult();
+        },
+        populateYears() {
+            this.elements.yearSelect.innerHTML = '';
+            for (let year = 2025; year <= 2054; year++) {
+                this.elements.yearSelect.add(new Option(year, year, year === this.state.year));
+            }
+        },
+        populateMonths() {
+            this.elements.monthSelect.innerHTML = '';
+            for (let month = 1; month <= 12; month++) {
+                this.elements.monthSelect.add(new Option(utils.padZero(month), month, month === this.state.month));
+            }
+        },
+        populateDays() {
+            this.elements.daySelect.innerHTML = '';
+            const days = utils.getDaysInMonth(this.state.year, this.state.month);
+            for (let day = 1; day <= days; day++) {
+                this.elements.daySelect.add(new Option(utils.padZero(day), day, day === this.state.day));
+            }
+        },
+        resetToToday() {
+            const today = new Date();
+            this.state.year = today.getFullYear() < 2025 ? 2025 : today.getFullYear();
+            this.state.month = today.getMonth() + 1;
+            this.state.day = today.getDate();
+            this.render();
+        },
+        bindEvents() {
+            this.elements.display.addEventListener('click', () => {
+                this.elements.modal.style.display = 'block';
+                calculateResult();
+            });
+            document.getElementById('reset-date-button').addEventListener('click', () => this.resetToToday());
+            this.elements.yearSelect.addEventListener('change', (e) => {
+                this.state.year = parseInt(e.target.value);
+                this.render();
+            });
+            this.elements.monthSelect.addEventListener('change', (e) => {
+                this.state.month = parseInt(e.target.value);
+                this.render();
+            });
+            this.elements.daySelect.addEventListener('change', (e) => {
+                this.state.day = parseInt(e.target.value);
+                this.elements.modal.style.display = 'none';
+                this.render();
+            });
+        }
+    };
+
+    const inputManager = {
+        inputs: Array.from(document.querySelectorAll('input[type="text"]')),
+        expressionParser: {
+            evaluate(expr) {
+                try {
+                    const tokens = (expr.match(/(\d+|\+|\-|\*|\/|\(|\))/g) || []).map(t => 
+                        /\d+/.test(t) ? parseInt(t) : t
+                    );
+                    const stack = [];
+                    let num = 0, op = '+';
+                    for (let token of tokens) {
+                        if (typeof token === 'number') {
+                            num = token;
+                            if (op === '+') stack.push(num);
+                            else if (op === '-') stack.push(-num);
+                            else if (op === '*') stack.push(stack.pop() * num);
+                            else if (op === '/') stack.push(Math.floor(stack.pop() / num));
+                        } else {
+                            op = token;
+                        }
+                    }
+                    return Math.max(0, Math.round(stack.reduce((a, b) => a + b, 0)));
+                } catch {
+                    return 0;
+                }
+            }
+        },
+        init() {
+            this.inputs.forEach((input, index) => {
+                input.addEventListener('click', () => input.value = '');
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        input.value = this.expressionParser.evaluate(input.value);
+                        calculateResult();
+                        const nextInput = this.inputs[(index + 1) % this.inputs.length];
+                        nextInput.value = '';
+                        nextInput.focus();
+                    }
+                });
+                input.addEventListener('blur', () => {
+                    input.value = this.expressionParser.evaluate(input.value);
+                    calculateResult();
+                });
+            });
+        }
+    };
+
+    const resultManager = {
+        limits: {
+            ubereats_bag: 50, ubereats_6grid: 15, ubereats_8grid: 13,
+            foodpanda_bag: 80, foodpanda_6grid: 15, foodpanda_8grid: 13,
+            foodpanda_2022_6grid: 15, foodpanda_2022_8grid: 13,
+            foodpanda_velcro_insulated: 10, foodpanda_magnetic_insulated: 10,
+            foodpanda_flip_insulated: 6
+        },
+        hudDisplay: document.getElementById('hud-display'),
+        update() {
+            const formattedDate = `${dateManager.state.year}/${utils.padZero(dateManager.state.month)}/${utils.padZero(dateManager.state.day)}訂單`;
+            let resultHTML = `<p>${formattedDate}</p>`;
+            inputManager.inputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const boxes = this.calculateBoxes(value, this.limits[input.name]);
+                if (boxes > 0) {
+                    const label = input.parentElement.querySelector('.label').textContent.trim();
+                    resultHTML += `<p>${label} ×${boxes}</p>`;
+                }
+            });
+            this.hudDisplay.innerHTML = resultHTML;
+        },
+        calculateBoxes(quantity, limit) {
+            return quantity > 0 ? Math.ceil(quantity / limit) : 0;
+        },
+        copy() {
+            const text = Array.from(this.hudDisplay.querySelectorAll('p'))
+                .map(p => p.textContent)
+                .join('\n');
+            navigator.clipboard.writeText(text)
+                .then(() => alert('複製成功'))
+                .catch(() => alert('複製失敗'));
+        },
+        init() {
+            this.hudDisplay.addEventListener('click', () => this.copy());
+            this.update();
+        }
+    };
+
+    function calculateResult() {
+        resultManager.update();
+    }
+
+    dateManager.init();
+    inputManager.init();
+    resultManager.init();
+</script>
