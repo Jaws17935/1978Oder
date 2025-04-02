@@ -14,27 +14,43 @@
     <div class="category-section">
         <div class="category-title">UberEats</div>
         <div class="grid-container" data-category="ubereats">
-            <div class="cyber-input"><span class="label">UberEats提袋</span><input type="text" name="ubereats_bag" value="0"></div>
-            <div class="cyber-input"><span class="label">UberEats六格箱</span><input type="text" name="ubereats_6grid" value="0"></div>
-            <div class="cyber-input"><span class="label">UberEats八格箱</span><input type="text" name="ubereats_8grid" value="0"></div>
+            <div class="cyber-input"><span class="label">UberEats提袋</span><input type="text" name="ubereats_bag" value=""></div>
+            <div class="cyber-input"><span class="label">UberEats六格箱</span><input type="text" name="ubereats_6grid" value=""></div>
+            <div class="cyber-input"><span class="label">UberEats八格箱</span><input type="text" name="ubereats_8grid" value=""></div>
         </div>
     </div>
 
     <div class="category-section">
         <div class="category-title">FoodPanda</div>
         <div class="grid-container" data-category="foodpanda">
-            <div class="cyber-input"><span class="label">FoodPanda提袋</span><input type="text" name="foodpanda_bag" value="0"></div>
-            <div class="cyber-input"><span class="label">FoodPanda六格箱</span><input type="text" name="foodpanda_6grid" value="0"></div>
-            <div class="cyber-input"><span class="label">FoodPanda八格箱</span><input type="text" name="foodpanda_8grid" value="0"></div>
-            <div class="cyber-input"><span class="label">FoodPanda 2022六格箱</span><input type="text" name="foodpanda_2022_6grid" value="0"></div>
-            <div class="cyber-input"><span class="label">FoodPanda 2022八格箱</span><input type="text" name="foodpanda_2022_8grid" value="0"></div>
-            <div class="cyber-input"><span class="label">FoodPanda魔鬼氈保溫箱</span><input type="text" name="foodpanda_velcro_insulated" value="0"></div>
-            <div class="cyber-input"><span class="label">FoodPanda磁吸式保溫箱</span><input type="text" name="foodpanda_magnetic_insulated" value="0"></div>
-            <div class="cyber-input"><span class="label">FoodPanda上掀款保溫箱</span><input type="text" name="foodpanda_flip_insulated" value="0"></div>
+            <div class="cyber-input"><span class="label">FoodPanda提袋</span><input type="text" name="foodpanda_bag" value=""></div>
+            <div class="cyber-input"><span class="label">FoodPanda六格箱</span><input type="text" name="foodpanda_6grid" value=""></div>
+            <div class="cyber-input"><span class="label">FoodPanda八格箱</span><input type="text" name="foodpanda_8grid" value=""></div>
+            <div class="cyber-input"><span class="label">FoodPanda 2022六格箱</span><input type="text" name="foodpanda_2022_6grid" value=""></div>
+            <div class="cyber-input"><span class="label">FoodPanda 2022八格箱</span><input type="text" name="foodpanda_2022_8grid" value=""></div>
+            <div class="cyber-input"><span class="label">FoodPanda魔鬼氈保溫箱</span><input type="text" name="foodpanda_velcro_insulated" value=""></div>
+            <div class="cyber-input"><span class="label">FoodPanda磁吸式保溫箱</span><input type="text" name="foodpanda_magnetic_insulated" value=""></div>
+            <div class="cyber-input"><span class="label">FoodPanda上掀款保溫箱</span><input type="text" name="foodpanda_flip_insulated" value=""></div>
         </div>
     </div>
 
-    <div id="hud-display"></div>
+    <!-- 採購計算 -->
+    <div class="category-section">
+        <div class="category-title">採購計算</div>
+        <div id="hud-display"></div>
+    </div>
+
+    <!-- 採購成本框架 -->
+    <div class="category-section">
+        <div class="category-title">採購成本</div>
+        <div id="cost-display" class="no-copy"></div>
+        <div id="cost-summary" class="cost-summary no-copy">
+            <div class="cost-total-row">
+                <span class="cost-total">總成本: <span id="total-cost-amount">0</span> 元</span>
+                <input type="text" id="cost-note-input" class="cost-note-input">
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -104,7 +120,7 @@
         border-color: var(--cyber-purple);
         outline: none;
     }
-    #hud-display {
+    #hud-display, #cost-display {
         background: rgba(0,0,0,0.5);
         border: 1px solid var(--neon-cyan);
         border-radius: 6px;
@@ -112,16 +128,56 @@
         margin-top: 0.8rem;
         text-align: left;
         backdrop-filter: blur(8px);
-        cursor: pointer;
         transition: border-color var(--transition-time);
+    }
+    #hud-display {
+        cursor: pointer;
     }
     #hud-display:hover {
         border-color: var(--cyber-purple);
     }
-    #hud-display p {
+    .no-copy {
+        cursor: default;
+    }
+    #hud-display p, #cost-display p {
         margin: 3px 0;
         font-size: 1rem;
         color: var(--neon-cyan);
+    }
+    .cost-summary {
+        background: rgba(0,0,0,0.5);
+        border: 1px solid var(--neon-cyan);
+        border-radius: 6px;
+        padding: 0.8rem;
+        margin-top: 0.8rem;
+        backdrop-filter: blur(8px);
+        transition: border-color var(--transition-time);
+        display: none; /* 默認隱藏，有成本時顯示 */
+    }
+    .cost-total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .cost-total {
+        font-weight: bold;
+        color: var(--neon-cyan);
+        font-size: 1.1rem;
+    }
+    .cost-note-input {
+        width: 80px;
+        padding: 0.4rem;
+        background: rgba(0,0,0,0.3);
+        border: 1px solid var(--neon-cyan);
+        border-radius: 4px;
+        color: var(--neon-cyan);
+        font-size: 0.9rem;
+        text-align: center;
+        transition: all var(--transition-time);
+    }
+    .cost-note-input:focus {
+        border-color: var(--cyber-purple);
+        outline: none;
     }
     #date-picker {
         text-align: center;
@@ -193,7 +249,7 @@
             width: 70px;
             font-size: 0.9rem;
         }
-        #hud-display {
+        #hud-display, #cost-display {
             padding: 0.6rem;
         }
     }
@@ -202,7 +258,8 @@
 <script>
     const utils = {
         padZero(num) { return String(num).padStart(2, '0'); },
-        getDaysInMonth(year, month) { return new Date(year, month, 0).getDate(); }
+        getDaysInMonth(year, month) { return new Date(year, month, 0).getDate(); },
+        formatNumber(num) { return num.toLocaleString(); }
     };
 
     const dateManager = {
@@ -276,12 +333,30 @@
 
     const inputManager = {
         inputs: Array.from(document.querySelectorAll('input[type="text"]')),
+        previousValues: {},    // 跟踪先前的值以便累加
+        hasLostFocus: {},      // 跟踪哪些字段失去了焦點
+        currentInput: null,    // 跟踪當前焦點的輸入框
+        windowBlurred: false,  // 跟踪窗口是否失去焦點
+        
         expressionParser: {
             evaluate(expr) {
+                // 空輸入處理
+                if (expr === undefined || expr === null) return '';
+                const trimmed = String(expr).trim();
+                if (trimmed === '') return '';
+                
+                // 如果輸入就是單個0，應該保留它
+                if (trimmed === '0') return '0';
+                
                 try {
-                    const tokens = (expr.match(/(\d+|\+|\-|\*|\/|\(|\))/g) || []).map(t => 
+                    // 解析表達式中的數字和運算符
+                    const tokens = (trimmed.match(/(\d+|\+|\-|\*|\/|\(|\))/g) || []).map(t => 
                         /\d+/.test(t) ? parseInt(t) : t
                     );
+                    
+                    if (tokens.length === 0) return '';
+                    
+                    // 計算表達式的值
                     const stack = [];
                     let num = 0, op = '+';
                     for (let token of tokens) {
@@ -295,29 +370,188 @@
                             op = token;
                         }
                     }
-                    return Math.max(0, Math.round(stack.reduce((a, b) => a + b, 0)));
-                } catch {
-                    return 0;
+                    
+                    const result = Math.max(0, Math.round(stack.reduce((a, b) => a + b, 0)));
+                    // 明確的零和計算結果為零的處理不同
+                    if (result === 0 && trimmed !== '0') {
+                        return '';
+                    }
+                    return String(result);
+                } catch (e) {
+                    console.error("Expression parsing error:", e);
+                    return '';
                 }
             }
         },
+
+        // 處理輸入提交
+        commitInput(input) {
+            if (!input) return;
+            
+            // 保存原始輸入值
+            const originalValue = String(input.value);
+            
+            // 計算表達式並獲取結果
+            const newValue = this.expressionParser.evaluate(originalValue);
+            
+            // 如果值發生變化，更新輸入框
+            if (originalValue !== newValue) {
+                input.value = newValue;
+            }
+            
+            // 處理累加邏輯
+            const previousValue = this.previousValues[input.name] || 0;
+            if (previousValue > 0 && (newValue === '0' || newValue !== '')) {
+                const parsedNewValue = parseFloat(newValue) || 0;
+                const sum = parsedNewValue + previousValue;
+                
+                // 更新輸入框顯示
+                if (sum === 0 && originalValue !== '0') {
+                    input.value = '';
+                } else {
+                    input.value = String(sum);
+                }
+                
+                // 重置累加值
+                this.previousValues[input.name] = 0;
+            }
+            
+            // 計算並更新顯示結果
+            calculateResult();
+        },
+
         init() {
+            // 為每個輸入框設置事件處理
             this.inputs.forEach((input, index) => {
-                input.addEventListener('click', () => input.value = '');
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        input.value = this.expressionParser.evaluate(input.value);
-                        calculateResult();
-                        const nextInput = this.inputs[(index + 1) % this.inputs.length];
-                        nextInput.value = '';
-                        nextInput.focus();
+                // 跳過匯率輸入框
+                if (input.id === 'cost-note-input') return;
+                
+                // 初始化狀態追踪
+                this.previousValues[input.name] = 0;
+                this.hasLostFocus[input.name] = false;
+                
+                // 當輸入框獲得焦點時
+                input.addEventListener('focus', () => {
+                    this.currentInput = input;
+                    
+                    // 如果是窗口重新獲得焦點，不要清空輸入
+                    if (this.windowBlurred) {
+                        this.windowBlurred = false;
+                        return;
+                    }
+                    
+                    // 如果之前失去焦點且有值，則準備累加
+                    const currentValue = input.value;
+                    if (this.hasLostFocus[input.name] && currentValue !== '') {
+                        // 保存當前值用於之後累加
+                        this.previousValues[input.name] = parseFloat(currentValue) || 0;
+                        // 清空輸入框
+                        input.value = '';
+                        // 重置焦點標記
+                        this.hasLostFocus[input.name] = false;
                     }
                 });
+                
+                // 當輸入框失去焦點時
                 input.addEventListener('blur', () => {
-                    input.value = this.expressionParser.evaluate(input.value);
-                    calculateResult();
+                    this.commitInput(input);
+                    this.hasLostFocus[input.name] = true;
+                    this.currentInput = null;
+                });
+                
+                // 點擊處理 - 計算表達式並設置光標位置
+                input.addEventListener('click', (e) => {
+                    if (input.value) {
+                        const originalValue = input.value;
+                        const newValue = this.expressionParser.evaluate(originalValue);
+                        
+                        if (originalValue !== newValue) {
+                            input.value = newValue;
+                            calculateResult();
+                        }
+                    }
+                    
+                    // 延遲執行，確保在瀏覽器處理完默認點擊行為後執行
+                    setTimeout(() => {
+                        // 將光標定位到最後
+                        input.selectionStart = input.selectionEnd = input.value.length;
+                    }, 0);
+                });
+                
+                // 按鍵處理
+                input.addEventListener('keydown', (e) => {
+                    // Delete鍵處理
+                    if (e.key === 'Delete') {
+                        input.value = '';
+                        this.previousValues[input.name] = 0;
+                        this.hasLostFocus[input.name] = false;
+                        calculateResult();
+                        return;
+                    }
+                    
+                    // Enter鍵處理
+                    if (e.key === 'Enter') {
+                        // 提交當前輸入
+                        this.commitInput(input);
+                        
+                        // 移動到下一個輸入框
+                        const nextInput = this.inputs[(index + 1) % this.inputs.length];
+                        nextInput.focus();
+                        
+                        // 延遲設置光標位置
+                        setTimeout(() => {
+                            nextInput.selectionStart = nextInput.selectionEnd = nextInput.value.length;
+                        }, 0);
+                    }
                 });
             });
+            
+            // 窗口失去焦點時
+            window.addEventListener('blur', () => {
+                this.windowBlurred = true;
+                
+                // 提交當前輸入框的值
+                if (this.currentInput && !this.currentInput.id.includes('cost-note')) {
+                    this.commitInput(this.currentInput);
+                }
+            });
+            
+            // 窗口重新獲得焦點時
+            window.addEventListener('focus', () => {
+                this.windowBlurred = false;
+            });
+            
+            // 匯率輸入框特殊處理
+            const exchangeRateInput = document.getElementById('cost-note-input');
+            if (exchangeRateInput) {
+                exchangeRateInput.addEventListener('input', () => {
+                    resultManager.updateExchangeRate();
+                });
+                
+                exchangeRateInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Delete') {
+                        exchangeRateInput.value = '';
+                        resultManager.updateExchangeRate();
+                        return;
+                    }
+                    
+                    if (e.key === 'Enter') {
+                        resultManager.updateExchangeRate();
+                    }
+                });
+                
+                exchangeRateInput.addEventListener('blur', () => {
+                    resultManager.updateExchangeRate();
+                });
+                
+                exchangeRateInput.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    setTimeout(() => {
+                        exchangeRateInput.selectionStart = exchangeRateInput.selectionEnd = exchangeRateInput.value.length;
+                    }, 0);
+                });
+            }
         }
     };
 
@@ -329,24 +563,140 @@
             foodpanda_velcro_insulated: 10, foodpanda_magnetic_insulated: 10,
             foodpanda_flip_insulated: 6
         },
+        unitPrices: {
+            ubereats_bag: 10,
+            foodpanda_bag: 13,
+            ubereats_6grid: 65,
+            ubereats_8grid: 70,
+            foodpanda_6grid: 65,
+            foodpanda_8grid: 70,
+            foodpanda_2022_6grid: 65,
+            foodpanda_2022_8grid: 70,
+            foodpanda_velcro_insulated: 135,
+            foodpanda_magnetic_insulated: 135,
+            foodpanda_flip_insulated: 170
+        },
         hudDisplay: document.getElementById('hud-display'),
+        costDisplay: document.getElementById('cost-display'),
+        costSummary: document.getElementById('cost-summary'),
+        currentTotalCost: 0,
+
         update() {
             const formattedDate = `${dateManager.state.year}/${utils.padZero(dateManager.state.month)}/${utils.padZero(dateManager.state.day)}訂單`;
-            let resultHTML = `<p>${formattedDate}</p>`;
+            
+            // 收集所有有效的項目（數量>0）
+            const allItems = [];
+            let totalCost = 0;
+            
+            // 處理所有輸入框數據
             inputManager.inputs.forEach(input => {
+                // 略過匯率輸入框
+                if (input.id === 'cost-note-input') return;
+                
+                // 跳過空值
+                if (input.value === '') return;
+                
+                // 解析數值
                 const value = parseFloat(input.value) || 0;
+                if (value <= 0) return;
+                
+                // 計算箱數
                 const boxes = this.calculateBoxes(value, this.limits[input.name]);
-                if (boxes > 0) {
-                    const label = input.parentElement.querySelector('.label').textContent.trim();
-                    resultHTML += `<p>${label} ×${boxes}</p>`;
-                }
+                // 獲取標籤名稱
+                const label = input.parentElement.querySelector('.label').textContent.trim();
+                
+                // 計算成本
+                const unitPrice = this.unitPrices[input.name] || 0;
+                const cost = value * unitPrice;
+                
+                // 添加到列表
+                allItems.push({
+                    label,
+                    count: value,
+                    boxes,
+                    cost,
+                    unitPrice
+                });
+                
+                // 累加總成本
+                totalCost += cost;
             });
-            this.hudDisplay.innerHTML = resultHTML;
+            
+            // 更新當前總成本
+            this.currentTotalCost = totalCost;
+            
+            // 更新採購計算顯示 - 只顯示日期和箱數，不顯示總成本
+            let boxesHTML = `<p>${formattedDate}</p>`;
+            
+            // 直接添加所有項目（不分類）
+            allItems.forEach(item => {
+                boxesHTML += `<p>${item.label} ×${item.boxes}</p>`;
+            });
+            
+            this.hudDisplay.innerHTML = boxesHTML;
+            
+            // 更新採購成本顯示
+            this.updateCostDisplay(allItems, totalCost, formattedDate);
+            
+            // 更新匯率計算
+            this.updateExchangeRate();
         },
+
         calculateBoxes(quantity, limit) {
             return quantity > 0 ? Math.ceil(quantity / limit) : 0;
         },
-        copy() {
+        
+        // 更新採購成本顯示 - 顯示每個項目的成本，包含數量
+        updateCostDisplay(items, totalCost, date) {
+            let costHTML = `<p>${date}</p>`;
+            
+            // 過濾出有成本的項目
+            const costItems = items.filter(item => item.cost > 0);
+            
+            if (costItems.length > 0) {
+                costItems.forEach(item => {
+                    costHTML += `<p>${item.label} * ${item.count} = ${utils.formatNumber(item.cost)} 元</p>`;
+                });
+                
+                this.costDisplay.innerHTML = costHTML;
+                
+                // 更新總成本金額 (應用匯率計算)
+                this.updateExchangeRate();
+                
+                // 顯示總成本區域
+                this.costSummary.style.display = 'block';
+            } else {
+                costHTML += "<p>尚無成本資料</p>";
+                this.costDisplay.innerHTML = costHTML;
+                
+                // 隱藏總成本區域
+                this.costSummary.style.display = 'none';
+            }
+        },
+        
+        // 更新匯率計算
+        updateExchangeRate() {
+            const exchangeRateInput = document.getElementById('cost-note-input');
+            const totalCostElement = document.getElementById('total-cost-amount');
+            
+            if (exchangeRateInput && totalCostElement) {
+                const exchangeRate = parseFloat(exchangeRateInput.value);
+                
+                if (exchangeRate && !isNaN(exchangeRate) && this.currentTotalCost > 0) {
+                    // 計算匯率後的成本
+                    const exchangedCost = this.currentTotalCost * exchangeRate;
+                    
+                    // 更新總成本顯示
+                    totalCostElement.textContent = utils.formatNumber(exchangedCost);
+                } else {
+                    // 顯示原始總成本
+                    totalCostElement.textContent = utils.formatNumber(this.currentTotalCost);
+                }
+            }
+        },
+
+        // 採購計算區域複製功能
+        copyBoxes() {
             const text = Array.from(this.hudDisplay.querySelectorAll('p'))
                 .map(p => p.textContent)
                 .join('\n');
@@ -354,8 +704,11 @@
                 .then(() => alert('複製成功'))
                 .catch(() => alert('複製失敗'));
         },
+
         init() {
-            this.hudDisplay.addEventListener('click', () => this.copy());
+            // 只有採購計算區域可以複製
+            this.hudDisplay.addEventListener('click', () => this.copyBoxes());
+            
             this.update();
         }
     };
