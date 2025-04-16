@@ -60,6 +60,46 @@
         --cyber-purple: #712f79;
         --transition-time: 0.3s;
     }
+    body {
+        background: var(--space-blue);
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            linear-gradient(45deg, rgba(0,243,255,0.1) 1px, transparent 1px),
+            linear-gradient(-45deg, rgba(0,243,255,0.1) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: -1;
+        animation: gridMove 20s linear infinite;
+    }
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, transparent 0%, var(--space-blue) 100%);
+        z-index: -1;
+    }
+    @keyframes gridMove {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 40px 40px;
+        }
+    }
     .cyber-panel {
         background: var(--space-blue);
         color: var(--neon-cyan);
